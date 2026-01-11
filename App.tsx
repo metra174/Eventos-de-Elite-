@@ -16,7 +16,10 @@ import {
   MapPin,
   UtensilsCrossed,
   FileText,
-  Loader2
+  Loader2,
+  Gem,
+  GlassWater,
+  Heart
 } from 'lucide-react';
 
 // --- Types ---
@@ -36,26 +39,43 @@ const PACKAGES: Package[] = [
     id: 'intimista',
     name: 'Essência Intimista',
     price: 150000,
-    description: 'A sutileza dos detalhes em um encontro exclusivo e memorável.',
+    description: 'A sutileza dos detalhes em um encontro exclusivo e memorável para os mais próximos.',
     image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=800',
-    features: ['Curadoria de Design Floral', 'Mesa de Doces Artisanal', 'Até 25 Convidados', 'Gestão de Cerimonial']
+    features: ['Até 25 Convidados', 'Design Floral Autoral', 'Curadoria de Mobiliário', 'Coordenação Local']
   },
   {
-    id: 'premium',
-    name: 'Elite Signature',
-    price: 450000,
-    tag: 'Sinfonia do Casal',
-    description: 'Onde o luxo encontra a emoção em produções de tirar o fôlego.',
+    id: 'alambamento',
+    name: 'Alambamento de Ouro',
+    price: 350000,
+    tag: 'Tradição & Luxo',
+    description: 'Honre a tradição com uma cenografia que exalta a cultura e a união familiar.',
+    image: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=800',
+    features: ['Decoração Temática Cultural', 'Protocolo Especializado', 'Buffet Nacional Premium', 'Som & Iluminação Cênica']
+  },
+  {
+    id: 'corporate',
+    name: 'Executive Cocktail',
+    price: 550000,
+    description: 'Networking e prestígio para eventos corporativos e lançamentos de marcas.',
+    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800',
+    features: ['Mobiliário Lounge VIP', 'Serviço de Canapés Gourmet', 'Sonorização Ambiente', 'Equipa de Recepcionistas']
+  },
+  {
+    id: 'wedding',
+    name: 'Wedding Signature',
+    price: 950000,
+    tag: 'O Preferido das Noivas',
+    description: 'Onde o luxo encontra a emoção em produções de tirar o fôlego para o seu grande dia.',
     image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=800',
-    features: ['Cenografia de Luxo Total', 'Buffet Gastronómico Assinado', 'Som, Luz & Efeitos Sensoriais', 'Staff de Excelência Elite']
+    features: ['Cenografia de Luxo Total', 'Assessoria Completa (Full Planning)', 'Buffet Internacional Assinado', 'Som, Luz & Efeitos Sensoriais']
   },
   {
     id: 'gala',
     name: 'Majestic Gala',
     price: 'Sob Consulta',
-    description: 'A celebração definitiva. Transformamos sonhos em marcos históricos.',
+    description: 'A celebração definitiva para Galas, XV Anos e eventos de alto impacto social.',
     image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=800',
-    features: ['Assessoria 360º Personalizada', 'Arquitetura de Evento Exclusiva', 'Alta Gastronomia Internacional', 'Hospitalidade VIP & Concierge']
+    features: ['Arquitetura de Evento Exclusiva', 'Consultoria Gastronómica VIP', 'Segurança & Valet Parking', 'Hospitalidade 5 Estrelas']
   }
 ];
 
@@ -79,8 +99,8 @@ const Navbar = () => {
         
         <div className={`hidden md:flex gap-12 text-[11px] font-bold uppercase tracking-[0.25em] ${isScrolled ? 'text-white/70' : 'text-midnight/60'}`}>
           <a href="#portfolio" className="hover:text-gold transition-colors duration-300">Portfolio</a>
+          <a href="#planos" className="hover:text-gold transition-colors duration-300">Planos</a>
           <a href="#solicitar" className="hover:text-gold transition-colors duration-300">Orçamento</a>
-          <a href="#faq" className="hover:text-gold transition-colors duration-300">Suporte</a>
         </div>
 
         <button 
@@ -99,8 +119,8 @@ const Navbar = () => {
         <button onClick={() => setIsOpen(false)} className="absolute top-8 right-8 text-gold"><X size={44} /></button>
         <div className="space-y-8 text-center">
           <a href="#portfolio" className="block text-5xl serif" onClick={() => setIsOpen(false)}>Portfolio</a>
+          <a href="#planos" className="block text-5xl serif" onClick={() => setIsOpen(false)}>Planos</a>
           <a href="#solicitar" className="block text-5xl serif" onClick={() => setIsOpen(false)}>Orçamento</a>
-          <a href="#faq" className="block text-5xl serif" onClick={() => setIsOpen(false)}>Suporte</a>
         </div>
         <button onClick={() => document.getElementById('solicitar')?.scrollIntoView({ behavior: 'smooth' })} className="btn-luxury py-6 rounded-2xl font-black text-xl uppercase mt-8">CONTACTAR AGORA</button>
       </div>
@@ -121,10 +141,7 @@ const App = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Pequeno delay para simular processamento "premium"
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
     const whatsappMsg = `Olá Elite Events! Gostaria de solicitar um orçamento:\n\n👤 Nome: ${formData.nome}\n📱 Telemóvel: ${formData.telemovel}\n📅 Data: ${formData.data}\n📍 Localização: ${formData.localizacao}\n✨ Mensagem: ${formData.mensagem}`;
     window.open(`https://wa.me/244000000000?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
     setIsSubmitting(false);
@@ -162,10 +179,10 @@ const App = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-6 pt-6">
               <button 
-                onClick={() => document.getElementById('solicitar')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('planos')?.scrollIntoView({ behavior: 'smooth' })}
                 className="btn-luxury px-12 py-6 rounded-3xl font-black text-xs uppercase tracking-[0.25em] shadow-2xl flex items-center justify-center gap-4"
               >
-                Solicitar Orçamento <ArrowRight size={20} />
+                Ver Planos de Elite <ArrowRight size={20} />
               </button>
               <button 
                 onClick={openWhatsAppTriagem}
@@ -176,8 +193,8 @@ const App = () => {
             </div>
           </div>
           <div className="lg:col-span-5 relative">
-            <div className="relative aspect-[4/5] rounded-[4rem] overflow-hidden border-[15px] border-white shadow-[0_50px_100px_-30px_rgba(0,0,0,0.4)] rotate-3">
-              <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1200" className="w-full h-full object-cover" alt="Hero Elite" />
+            <div className="relative aspect-[4/5] rounded-[4rem] overflow-hidden border-[15px] border-white shadow-[0_50px_100px_-30px_rgba(0,0,0,0.4)] rotate-3 group">
+              <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1200" className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" alt="Hero Elite" />
             </div>
           </div>
         </div>
@@ -214,6 +231,85 @@ const App = () => {
         </div>
       </section>
 
+      {/* Planos de Elite Section */}
+      <section id="planos" className="py-40 bg-white px-6">
+        <div className="max-w-7xl mx-auto space-y-24">
+          <div className="text-center space-y-6">
+            <span className="text-gold font-bold text-xs uppercase tracking-[0.5em] italic">Alta Costura de Eventos</span>
+            <h2 className="text-5xl md:text-8xl serif text-midnight italic leading-none">Experiências Assinadas</h2>
+            <p className="text-midnight/40 max-w-2xl mx-auto font-medium">Escolha o ponto de partida para o seu sonho. Todos os nossos planos são flexíveis e adaptáveis ao seu desejo.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {PACKAGES.map((pkg) => (
+              <div key={pkg.id} className={`group bg-[#FDFCFB] rounded-[4rem] border border-gold/10 overflow-hidden flex flex-col hover:shadow-[0_40px_80px_-20px_rgba(197,160,89,0.15)] transition-all duration-700 relative ${pkg.tag ? 'border-gold/30 scale-105 shadow-xl z-10' : ''}`}>
+                {pkg.tag && (
+                  <div className="absolute top-6 left-6 bg-gold text-midnight px-6 py-2 rounded-full text-[9px] font-black uppercase tracking-widest z-20 shadow-lg">
+                    {pkg.tag}
+                  </div>
+                )}
+                <div className="h-64 overflow-hidden relative">
+                  <img src={pkg.image} className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" alt={pkg.name} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#FDFCFB] to-transparent"></div>
+                </div>
+                <div className="p-10 space-y-8 flex-1 flex flex-col">
+                  <div className="space-y-3">
+                    <h3 className="text-3xl font-bold serif text-midnight">{pkg.name}</h3>
+                    <div className="text-gold text-2xl font-black">
+                      {typeof pkg.price === 'number' ? `Kz ${pkg.price.toLocaleString()}` : pkg.price}
+                    </div>
+                  </div>
+                  <p className="text-sm text-midnight/60 leading-relaxed font-medium">{pkg.description}</p>
+                  <div className="space-y-4 pt-4 flex-1">
+                    {pkg.features.map((feat, i) => (
+                      <div key={i} className="flex items-center gap-4 text-xs font-bold text-midnight/80">
+                        <Check size={16} className="text-gold flex-shrink-0" />
+                        {feat}
+                      </div>
+                    ))}
+                  </div>
+                  <button 
+                    onClick={() => {
+                      setFormData({...formData, mensagem: `Interesse no Plano: ${pkg.name}`});
+                      document.getElementById('solicitar')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="w-full btn-luxury py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6"
+                  >
+                    Escolher este Plano
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Portfolio Gallery */}
+      <section id="portfolio" className="py-32 px-6 max-w-7xl mx-auto">
+        <div className="text-center space-y-4 mb-20">
+          <span className="text-gold font-bold text-xs uppercase tracking-[0.5em] italic">Visual Excellence</span>
+          <h2 className="text-5xl md:text-7xl serif text-midnight italic">Galeria de Prestígio</h2>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="space-y-6">
+            <div className="aspect-[3/4] rounded-[2.5rem] overflow-hidden group"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" /></div>
+            <div className="aspect-square rounded-[2.5rem] overflow-hidden group"><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" /></div>
+          </div>
+          <div className="space-y-6 pt-12">
+            <div className="aspect-square rounded-[2.5rem] overflow-hidden group"><img src="https://images.unsplash.com/photo-1478146896981-b80fe463b33e?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" /></div>
+            <div className="aspect-[3/4] rounded-[2.5rem] overflow-hidden group"><img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" /></div>
+          </div>
+          <div className="space-y-6">
+            <div className="aspect-[3/4] rounded-[2.5rem] overflow-hidden group"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" /></div>
+            <div className="aspect-square rounded-[2.5rem] overflow-hidden group"><img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" /></div>
+          </div>
+          <div className="space-y-6 pt-12">
+            <div className="aspect-square rounded-[2.5rem] overflow-hidden group"><img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" /></div>
+            <div className="aspect-[3/4] rounded-[2.5rem] overflow-hidden group"><img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1200" className="w-full h-full object-cover group-hover:scale-110 transition duration-1000" /></div>
+          </div>
+        </div>
+      </section>
+
       {/* Solicitação de Orçamento Form */}
       <section id="solicitar" className="py-40 bg-[#F7F2ED] px-6">
         <div className="max-w-4xl mx-auto space-y-16">
@@ -228,6 +324,7 @@ const App = () => {
                 <label className="text-[10px] font-black uppercase tracking-widest text-midnight/40 ml-2">Nome Completo</label>
                 <input required type="text" placeholder="Como devemos chamá-lo(a)?"
                   className="w-full bg-[#FDFCFB] border-b-2 border-gold/20 focus:border-gold py-4 px-4 text-midnight outline-none transition"
+                  value={formData.nome}
                   onChange={(e) => setFormData({...formData, nome: e.target.value})}
                 />
               </div>
@@ -235,6 +332,7 @@ const App = () => {
                 <label className="text-[10px] font-black uppercase tracking-widest text-midnight/40 ml-2">Telemóvel</label>
                 <input required type="tel" placeholder="+244"
                   className="w-full bg-[#FDFCFB] border-b-2 border-gold/20 focus:border-gold py-4 px-4 text-midnight outline-none transition"
+                  value={formData.telemovel}
                   onChange={(e) => setFormData({...formData, telemovel: e.target.value})}
                 />
               </div>
@@ -242,12 +340,14 @@ const App = () => {
                 <label className="text-[10px] font-black uppercase tracking-widest text-midnight/40 ml-2">Data Prevista</label>
                 <input required type="date"
                   className="w-full bg-[#FDFCFB] border-b-2 border-gold/20 focus:border-gold py-4 px-4 text-midnight outline-none transition"
+                  value={formData.data}
                   onChange={(e) => setFormData({...formData, data: e.target.value})}
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-midnight/40 ml-2">Zona do Evento</label>
                 <select className="w-full bg-[#FDFCFB] border-b-2 border-gold/20 focus:border-gold py-4 px-4 text-midnight outline-none transition cursor-pointer"
+                  value={formData.localizacao}
                   onChange={(e) => setFormData({...formData, localizacao: e.target.value})}
                 >
                   <option value="Talatona">Talatona</option>
@@ -262,6 +362,7 @@ const App = () => {
               <label className="text-[10px] font-black uppercase tracking-widest text-midnight/40 ml-2">O que sonha para este dia?</label>
               <textarea placeholder="Conte-nos brevemente o que imagina..."
                 className="w-full bg-[#FDFCFB] border-b-2 border-gold/20 focus:border-gold py-4 px-4 text-midnight outline-none transition min-h-[120px]"
+                value={formData.mensagem}
                 onChange={(e) => setFormData({...formData, mensagem: e.target.value})}
               />
             </div>
@@ -276,7 +377,28 @@ const App = () => {
         </div>
       </section>
 
-      {/* Footer & FAQ Placeholder */}
+      {/* Trust Factors */}
+      <section className="py-32 bg-midnight text-white px-6">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-24 text-center">
+          <div className="space-y-6">
+            <Award className="text-gold mx-auto" size={56} />
+            <h4 className="text-2xl serif text-gold italic">Selo de Prestígio</h4>
+            <p className="text-sm text-white/30 font-medium">Referência em decoração de alto padrão há 10 anos em Angola.</p>
+          </div>
+          <div className="space-y-6">
+            <ShieldCheck className="text-gold mx-auto" size={56} />
+            <h4 className="text-2xl serif text-gold italic">Reserva Segura</h4>
+            <p className="text-sm text-white/50 font-medium">Contratos formais e transparência absoluta em cada transação.</p>
+          </div>
+          <div className="space-y-6">
+            <Users className="text-gold mx-auto" size={56} />
+            <h4 className="text-2xl serif text-gold italic">Equipa Estrela</h4>
+            <p className="text-sm text-white/30 font-medium">Staff treinado nos mais altos padrões de hospitalidade internacional.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
       <footer className="bg-midnight pt-40 pb-20 px-6 text-white border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
           <div className="flex items-center gap-5">
